@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "Jira to Markdown — Export Issue Description",
+  "version": "1.0.0",
+  "description": "Export any Jira Cloud issue description to a downloadable Markdown (.md) file with one click. By 52nd Solution — www.52ndSolution.net",
+  "author": "52nd Solution",
+  "homepage_url": "https://www.52ndSolution.net",
+  "icons": {
+    "16": "icons/16.png",
+    "48": "icons/48.png",
+    "128": "icons/128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*.atlassian.net/*"],
+      "js": ["dist/content.js"],
+      "css": ["src/button.css"],
+      "run_at": "document_idle"
+    }
+  ]
+}

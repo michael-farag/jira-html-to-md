@@ -1,0 +1,33 @@
+#jira-to-md-download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 8px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 500;
+  color: #0052cc;
+  background: #e9f2ff;
+  border: 1px solid #b3d4ff;
+  border-radius: 4px;
+  cursor: pointer;
+  line-height: 1.4;
+  transition: background 0.15s ease, border-color 0.15s ease;
+  user-select: none;
+  white-space: nowrap;
+}
+
+#jira-to-md-download-btn:hover {
+  background: #cce0ff;
+  border-color: #579dff;
+}
+
+#jira-to-md-download-btn:active {
+  background: #b3d4ff;
+}
+
+#jira-to-md-download-btn:focus-visible {
+  outline: 2px solid #579dff;
+  outline-offset: 2px;
+}

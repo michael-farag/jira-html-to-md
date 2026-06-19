@@ -1,0 +1,20 @@
+{
+  "name": "jira-to-md",
+  "version": "1.0.0",
+  "description": "Chrome extension to export Jira Cloud issue descriptions as Markdown",
+  "author": "52nd Solution <admin@52ndSolution.net> (https://www.52ndSolution.net)",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "esbuild src/content.js --bundle --format=iife --outfile=dist/content.js --platform=browser",
+    "watch": "esbuild src/content.js --bundle --format=iife --outfile=dist/content.js --platform=browser --watch",
+    "package": "npm run build && zip -r jira-to-md.zip manifest.json dist/ icons/ src/button.css"
+  },
+  "dependencies": {
+    "turndown": "^7.2.0",
+    "turndown-plugin-gfm": "^1.0.2"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  }
+}
