@@ -54,6 +54,34 @@ td.addRule('cleanStrongMarkdown', {
   },
 });
 
+// Base64-embedded images are written reference-style — ![alt][image-1] in the
+// text, with the data URI collected at the end of the file — so the huge
+// base64 strings don't bury the description itself.
+td.addRule('embeddedImage', {
+  filter(node) {
+    return (
+      node.nodeName === 'IMG' &&
+      (node.getAttribute('src') || '').startsWith('data:')
+    );
+  },
+  replacement(_content, node) {
+    const src = node.getAttribute('src');
+    // An image used more than once is only stored once.
+    if (!this.labelBySrc.has(src)) {
+      this.labelBySrc.set(src, `image-${this.labelBySrc.size + 1}`);
+    }
+    const alt = (node.getAttribute('alt') || '').replace(/[\[\]\\]/g, '\\$&').replace(/\s+/g, ' ');
+    return `![${alt}][${this.labelBySrc.get(src)}]`;
+  },
+  labelBySrc: new Map(),
+  append() {
+    if (!this.labelBySrc.size) return '';
+    const references = [...this.labelBySrc].map(([src, label]) => `[${label}]: <${src}>`);
+    this.labelBySrc.clear();
+    return `\n\n${references.join('\n')}\n\n`;
+  },
+});
+
 export function convertToMarkdown(html) {
   return td.turndown(html).trim();
 }

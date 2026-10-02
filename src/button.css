@@ -27,6 +27,11 @@
   background: #b3d4ff;
 }
 
+#jira-to-md-download-btn:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
 #jira-to-md-download-btn:focus-visible {
   outline: 2px solid #579dff;
   outline-offset: 2px;

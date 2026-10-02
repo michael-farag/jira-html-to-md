@@ -11,6 +11,7 @@ A Chrome extension that adds a **⬇ Download .md** button to any Jira Cloud iss
   - Code blocks with language syntax fencing
   - Tables (GitHub Flavored Markdown)
   - Strikethrough and other inline formatting
+- Embeds images in the file as base64 `data:` URIs, so the export is self-contained and doesn't link back to Jira's authenticated media CDN. Each image appears in the text as `![alt][image-1]`, with the encoded data collected at the end of the file
 - Downloads a file named `PROJ-123-issue-summary.md` with the issue key as a top-level heading
 - Handles Jira Cloud as a single-page app — the button re-injects when you navigate between issues
 
@@ -47,7 +48,8 @@ This builds the extension and creates `jira-to-md.zip`, ready to upload to the C
 
 ## Known limitations
 
-- **Inline images** become `![alt text](url)` references pointing to Jira's CDN — they require authentication to view and are not downloaded.
+- **Images that can't be fetched** (for example, ones hosted on a third-party site that blocks cross-origin requests, or ones Jira hasn't loaded yet because they are off-screen) are left as `![alt text](url)` links to their original location. The button's tooltip reports how many were skipped.
+- **Embedded images make the file large** — base64 adds about a third to each image's size, and some Markdown viewers (GitHub among them) refuse to render `data:` URIs.
 - **Smart links / embed cards** (Confluence pages, GitHub PRs, etc.) are converted to plain hyperlinks.
 - **ADF-specific layout blocks** (multi-column layouts, panels) may lose their visual structure but their text content is preserved.
 
