@@ -1,7 +1,11 @@
 import { getDescriptionElement, getIssueKey, getIssueSummary } from './jira-dom.js';
 import { convertToMarkdown } from './converter.js';
+import { embedImages } from './images.js';
 
 const BUTTON_ID = 'jira-to-md-download-btn';
+const BUTTON_LABEL = '⬇ Download .md';
+const BUTTON_BUSY_LABEL = 'Embedding images…';
+const BUTTON_TITLE = 'Export description as Markdown — Jira to Markdown by 52nd Solution';
 
 function slugify(text) {
   return text
@@ -38,16 +42,27 @@ function injectButton() {
 
   const btn = document.createElement('button');
   btn.id = BUTTON_ID;
-  btn.textContent = '⬇ Download .md';
-  btn.title = 'Export description as Markdown — Jira to Markdown by 52nd Solution';
+  btn.textContent = BUTTON_LABEL;
+  btn.title = BUTTON_TITLE;
 
-  btn.addEventListener('click', () => {
+  btn.addEventListener('click', async () => {
     const el = getDescriptionElement();
     if (!el) return;
     const issueKey = getIssueKey() || 'ISSUE';
     const summary = getIssueSummary() || 'untitled';
-    const markdown = convertToMarkdown(el.innerHTML);
-    downloadMarkdown(issueKey, summary, markdown);
+
+    btn.disabled = true;
+    btn.textContent = BUTTON_BUSY_LABEL;
+    try {
+      const { html, failedCount } = await embedImages(el.innerHTML);
+      downloadMarkdown(issueKey, summary, convertToMarkdown(html));
+      btn.title = failedCount
+        ? `${failedCount} image(s) could not be embedded and were left as links.`
+        : BUTTON_TITLE;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = BUTTON_LABEL;
+    }
   });
 
   descEl.insertAdjacentElement('beforebegin', btn);

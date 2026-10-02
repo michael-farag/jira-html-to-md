@@ -35,7 +35,8 @@ There is no automated test suite yet. Manual testing steps:
 3. Click it — a `.md` file should download named `PROJ-123-<summary>.md`.
 4. Open the file and verify formatting is correct.
 5. Navigate to a different issue without reloading the page — confirm the button re-appears and downloads the new issue's description.
-6. Test an issue with no description — the button should still appear and produce a file with only the title heading.
+6. Open an issue whose description contains an image, download it, and confirm the file renders the image with the network disconnected (e.g. in the VS Code Markdown preview).
+7. Test an issue with no description — the button should still appear and produce a file with only the title heading.
 
 ## Project structure
 
@@ -43,6 +44,7 @@ There is no automated test suite yet. Manual testing steps:
 src/
   content.js    Entry point bundled by esbuild. Injects the button and handles downloads.
   jira-dom.js   DOM selectors for the description, issue key, and summary.
+  images.js     Fetches the description's images and inlines them as base64 data URIs.
   converter.js  Turndown (HTML → Markdown) configuration and custom rules.
   button.css    Styles for the injected button.
 manifest.json   Chrome Manifest V3 config.
